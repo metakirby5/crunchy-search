@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=Livestream Crunchyroll
+Comment=dmenu + Crunchyroll + livestreamer
+Exec=dmenu-crunchy-search --dmenu 'dmenu -p "crunchyroll" -fn "tewi" -x 0 -w 3200 -y 1700 -h 100'
+Icon=~/.local/share/icons/crunchyroll.png
+Terminal=false
