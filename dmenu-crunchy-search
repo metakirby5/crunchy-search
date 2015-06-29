@@ -45,27 +45,23 @@ notifier = args.notifier
 dmenu_proc = Popen(dmenu, stdin=PIPE, stdout=PIPE)
 selected = dmenu_proc.communicate('')[0].split('\n')[0]
 
-# No selection? Let them know.
+# No selection?
 if not selected:
-  # Stick our message in
-  call(notifier_with_message(notifier, 'No selection made'))
+  print('No selection made.')
   sys.exit(1)
 
 # Do the search
-body = crunchy_search.search(selected)
 try:
-  url = crunchy_search.parse(body)
-except crunchy_search.SearchError:
-  call(notifier_with_message(notifier, 'No search results found'))
+  result = crunchy_search.search(selected)
+except crunchy_search.SearchError as e:
+  call(notifier_with_message(notifier, e))
   sys.exit(1)
 
 # Call livestreamer
 call(notifier_with_message(notifier,
-  'Query: %s\n\nOpening: %s' % (
-    selected,
-    url,
-)))
+  'Now playing %(series)s %(ep_no)d: %(ep_name)s' % result
+))
 
-livestreamer.append(url)
+livestreamer.append(result['url'])
 call(livestreamer)
 
