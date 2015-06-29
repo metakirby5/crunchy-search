@@ -1,0 +1,65 @@
+#!/usr/bin/env python
+description = """
+Searches crunchyroll using dmenu, then
+uses livestreamer to open the first result.
+"""
+
+import crunchy_search
+import argparse
+import shlex
+import sys
+from subprocess import call, Popen, PIPE
+
+def notifier_with_message(notifier, msg):
+  return [s % {'msg': msg} for s in notifier]
+
+# Get dmenu
+parser = argparse.ArgumentParser(description=description)
+parser.add_argument('--dmenu',
+    help="how dmenu should be run",
+    type=str,
+    default='dmenu')
+parser.add_argument('--livestreamer',
+    help="""
+    how livestreamer should be run.
+    The url is added as the last argument.
+    """,
+    type=str,
+    default='livestreamer')
+parser.add_argument('--notifier',
+    help="""
+    how you should be notified.
+    Use %%(msg)s where you wish the
+    message to appear.
+    """,
+    type=str,
+    default='notify-send -a "dmenu-crunchy-search" "Crunchyroll Search" "%(msg)s"')
+args = parser.parse_args()
+dmenu = shlex.split(args.dmenu)
+livestreamer = shlex.split(args.livestreamer)
+notifier = shlex.split(args.notifier)
+
+# Open up dmenu and get its output
+dmenu_proc = Popen(dmenu, stdin=PIPE, stdout=PIPE)
+selected = dmenu_proc.communicate('')[0].split('\n')[0]
+
+# No selection? Let them know.
+if not selected:
+  # Stick our message in
+  call(notifier_with_message(notifier, 'No selection made'))
+  sys.exit(1)
+
+# Do the search
+body = crunchy_search.search(selected)
+url = crunchy_search.parse(body)
+
+# Call livestreamer
+call(notifier_with_message(notifier,
+  'Query: %s\n\nOpening: %s' % (
+    selected,
+    url,
+)))
+
+livestreamer.append(url)
+call(livestreamer)
+

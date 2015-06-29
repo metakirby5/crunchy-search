@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import requests
 from urllib import quote
 from bs4 import BeautifulSoup
