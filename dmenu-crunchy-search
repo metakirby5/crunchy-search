@@ -18,7 +18,7 @@ parser = argparse.ArgumentParser(description=description)
 parser.add_argument('--dmenu',
     help="how dmenu should be run",
     type=str,
-    default='dmenu')
+    default='dmenu -p "crunchyroll"')
 parser.add_argument('--livestreamer',
     help="""
     how livestreamer should be run.
