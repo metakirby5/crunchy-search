@@ -5,6 +5,9 @@ from bs4 import BeautifulSoup
 SEARCH_URL = 'http://www.crunchyroll.com/search?q=%s'
 RESULT_ID  = 'aux_results'
 
+class SearchError(Exception):
+  pass
+
 def search(query):
   # Encode the query
   query = quote(query.replace(' ', '+'))
@@ -17,7 +20,10 @@ def parse(body):
   soup = BeautifulSoup(body)
 
   # Return the url of the first result
-  return soup.find(id=RESULT_ID).a['href']
+  try:
+    return soup.find(id=RESULT_ID).a['href']
+  except TypeError:
+    raise SearchError('No results found.')
 
 def main():
   query = raw_input()
