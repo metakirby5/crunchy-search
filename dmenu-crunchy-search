@@ -6,7 +6,7 @@ uses livestreamer to open the first result.
 
 import crunchy_search
 import argparse
-import shlex
+import ushlex as shlex
 import sys
 from subprocess import call, Popen, PIPE
 
