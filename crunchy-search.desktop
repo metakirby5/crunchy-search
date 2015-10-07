@@ -3,6 +3,6 @@ Type=Application
 Encoding=UTF-8
 Name=Watch Crunchyroll
 Comment=dmenu + Crunchyroll + livestreamer
-Exec=dmenu-crunchy-search --dmenu 'dmenu -f -p "crunchyroll" -fn "tewi" -sb "#F78C25" -b -h 100 -hist /home/USER/.crunchy_search_history'
+Exec=dmenu-crunchy-search --dmenu 'dmenu -f -p "crunchyroll" -sb "#F78C25" -b -h 100 -hist /home/USER/.crunchy_search_history'
 Icon=/home/USER/.local/share/icons/crunchyroll.png
 Terminal=false
